@@ -1,0 +1,37 @@
+template:
+  - sensor:
+      - name: "Samsung Refrigerator Current Cooler Temperature"
+        icon: mdi:thermometer
+        unit_of_measurement: "°C"
+        state: "{{ state_attr('sensor.samsung_refrigerator_data_fetched', 'cooler').currentTemperature.value }}"
+        attributes:
+          smartthings_timestamp: "{{ as_datetime(state_attr('sensor.samsung_refrigerator_data_fetched', 'cooler').currentTemperature.timestamp).astimezone() }}"
+      - name: "Samsung Refrigerator Current Freezer Temperature"
+        icon: mdi:thermometer
+        unit_of_measurement: "°C"
+        state: "{{ state_attr('sensor.samsung_refrigerator_data_fetched', 'freezer').currentTemperature.value }}"
+        attributes:
+          smartthings_timestamp: "{{ as_datetime(state_attr('sensor.samsung_refrigerator_data_fetched', 'freezer').currentTemperature.timestamp).astimezone() }}"
+      - name: "Samsung Refrigerator Target Cooler Temperature"
+        icon: mdi:thermostat
+        unit_of_measurement: "°C"
+        state: "{{ state_attr('sensor.samsung_refrigerator_data_fetched', 'cooler').targetTemperature.value }}"
+        attributes:
+          smartthings_timestamp: "{{ as_datetime(state_attr('sensor.samsung_refrigerator_data_fetched', 'cooler').targetTemperature.timestamp).astimezone() }}"
+      - name: "Samsung Refrigerator Target Freezer Temperature"
+        icon: mdi:thermostat
+        unit_of_measurement: "°C"
+        state: "{{ state_attr('sensor.samsung_refrigerator_data_fetched', 'freezer').targetTemperature.value }}"
+        attributes:
+          smartthings_timestamp: "{{ as_datetime(state_attr('sensor.samsung_refrigerator_data_fetched', 'freezer').targetTemperature.timestamp).astimezone() }}"
+
+command_line:
+  - sensor:
+      name: Samsung Refrigerator Data Fetched
+      icon: mdi:cloud-download
+      command: "python3 /config/scripts/fetch_smartthings_status.py YOUR_DEVICE_ID"
+      scan_interval: 30
+      value_template: "{{ now().isoformat() }}"
+      json_attributes:
+        - cooler
+        - freezer
